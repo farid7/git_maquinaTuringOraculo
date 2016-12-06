@@ -1,5 +1,6 @@
 package maquina_Turing_Oraculo;
 
+
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -7,13 +8,14 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Random; 
+import java.util.*;
 
 class maquinaTuringOraculo {
 
 	public static int bitEdo = 4;                                             //6 bits de estado!    
 	public static DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH:mm:ss");
 	public static Random randomGenerator = new Random();
-		
+			
 	public static void main(String[] args) throws Exception{
 		/*
 		Scanner in = new Scanner(System.in);
@@ -131,6 +133,12 @@ class maquinaTuringOraculo {
 		int[] tape = new int[lng];         //initial tape
 		Arrays.fill(tape, 0);
 		
+//-----------initializing input(queue) for neural network (tau inputs)
+		Queue tau = new LinkedList();
+		for(int i=0; i < 4; i++)
+			tau.add(0);
+//----------------------------------------------------------------------
+		
 		System.out.println("estado inicial: " + edo);       
 				
 		while(true){
@@ -147,7 +155,9 @@ class maquinaTuringOraculo {
 		aux = Arrays.copyOfRange(tm, init, fin);                             //current state in TuringMachine
 		oraculo = 0;                                                         //actualize oracle
 		oraculo = randomGenerator.nextInt(2);
-				
+		tau.remove();
+		tau.add(oraculo);
+		
 		if (oraculo == 0 && tape[head] == 0){                                //prick instruction, based on oracle and head position
 			inst = Arrays.copyOfRange(aux,    0,  x);
 		} else if (oraculo == 0 && tape[head] == 1){
@@ -159,6 +169,7 @@ class maquinaTuringOraculo {
 		}
 
 		System.out.print("step: " + steps + " ; oraculo: " + oraculo + " ");
+		System.out.print(" ; Hitorial tau: " + tau + "; instrucciòn: ");
 		printVect(inst);
 		
 		if(!TMfinal.containsKey(edo) && (TMfinal.get(edo) != array2string(aux))){
