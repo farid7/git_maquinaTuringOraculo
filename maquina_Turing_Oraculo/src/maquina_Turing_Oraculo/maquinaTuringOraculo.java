@@ -12,7 +12,7 @@ import java.util.*;
 
 class maquinaTuringOraculo {
 
-	public static int bitEdo = 4;                                             //6 bits de estado!    
+	public static int bitEdo = 4;                                             //4 bits de estado!    
 	public static DateFormat dateFormat = new SimpleDateFormat("yyyy_MM_dd__HH:mm:ss");
 	public static Random randomGenerator = new Random();
 			
@@ -33,6 +33,7 @@ class maquinaTuringOraculo {
 		System.out.println("Hello Turing machine");
 		int[] cinta = new int[lng];
 		int prod; 
+		int time = 4;                                  //history for neural network
 		
 		int[] tmo1 = {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,         //BB3.btm (six ones)
 				      0,0,1,0,1,1,0,0,1,1,1,0,0,0,1,0,0,0,0,0,1,1,0,1,
@@ -42,7 +43,7 @@ class maquinaTuringOraculo {
 		
 
 		
-		cinta = runTM(tmo1, lng, maxStep, true, "BBT3");       //print steps?, nameFile                         //true: print Stated of turing Machine
+		cinta = runTM(tmo1, lng, maxStep, true, "BBT3", time);       //print steps?, nameFile                         //true: print Stated of turing Machine
 		prod = cuentaUnos(cinta);
 		System.out.println("Productividad: "+prod+"; Tamaño cinta: "+cinta.length);
 		System.out.println("");
@@ -118,7 +119,7 @@ class maquinaTuringOraculo {
 		return cont;
 	}
 	
-	public static int[] runTM(int[] tm, int lng, int maxStep, boolean datos, String name) throws Exception{
+	public static int[] runTM(int[] tm, int lng, int maxStep, boolean datos, String name, int time) throws Exception{
 		Map<Integer, String> TMfinal = new HashMap<Integer, String>();           //diccionario id->cadena
 		int edo = 1;                                                            //revisar estado inicial
 		int head = lng/2;
@@ -135,7 +136,7 @@ class maquinaTuringOraculo {
 		
 //-----------initializing input(queue) for neural network (tau inputs)
 		Queue tau = new LinkedList();
-		for(int i=0; i < 4; i++)
+		for(int i=0; i < time; i++)
 			tau.add(0);
 //----------------------------------------------------------------------
 		
